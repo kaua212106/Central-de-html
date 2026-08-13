@@ -1,12 +1,12 @@
 {
   "name": "DevKit - Kit do Desenvolvedor",
   "short_name": "DevKit",
-  "description": "Gerador de PWA, biblioteca de componentes, versões, bugs, paletas, editor HTML e backups.",
+  "description": "DevKit com PWA, componentes, projetos locais, editor, assistente de IA, versões, bugs, paletas e backups.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#08111f",
-  "theme_color": "#0f172a",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
   "orientation": "portrait-primary",
   "icons": [
     {
