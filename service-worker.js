@@ -1,4 +1,4 @@
-const CACHE='devkit-cache-v4';
+const CACHE='devkit-cache-v5';
 const FILES=['./','./index.html','./manifest.json','./icone.png'];
 
 self.addEventListener('install',event=>{

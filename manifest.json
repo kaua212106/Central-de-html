@@ -1,7 +1,7 @@
 {
   "name": "DevKit - Kit do Desenvolvedor",
   "short_name": "DevKit",
-  "description": "DevKit com PWA, componentes, projetos locais, editor, assistente de IA, versões, bugs, paletas e backups.",
+  "description": "DevKit com PWA, componentes, projetos locais, editor, versões, bugs, paletas e backups.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
