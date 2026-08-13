@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="Kit do Desenvolvedor: PWA, componentes, versões, bugs, paletas, editor HTML e backups.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icone.png">
+  <title>DevKit</title>
+  <style>
+    :root{--bg:#08111f;--panel:#101a2c;--panel2:#152238;--text:#edf4ff;--muted:#93a4bd;--line:#263752;--accent:#5ea0ff;--accent2:#84b6ff;--good:#3ddc97;--warn:#ffbd4a;--bad:#ff6b7a;--shadow:0 18px 50px rgba(0,0,0,.25);--radius:20px}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:radial-gradient(circle at top,#12213a 0,#08111f 42%,#050a12 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;padding-bottom:86px}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    .app{max-width:1180px;margin:auto;padding:18px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;position:sticky;top:0;z-index:20;padding:12px 0 16px;background:linear-gradient(180deg,rgba(8,17,31,.96),rgba(8,17,31,.78),transparent);backdrop-filter:blur(12px)}
+    .brand{display:flex;align-items:center;gap:12px}.brand-badge{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#69a9ff,#7c5cff);font-weight:900;box-shadow:var(--shadow)}
+    .brand h1{font-size:1.05rem;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:.82rem}
+    .status{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.83rem}.dot{width:9px;height:9px;border-radius:999px;background:var(--good);box-shadow:0 0 0 4px rgba(61,220,151,.11)}
+    .hero{padding:20px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(21,34,56,.96),rgba(12,22,38,.96));border-radius:28px;box-shadow:var(--shadow);margin-bottom:18px;overflow:hidden;position:relative}.hero:after{content:"</>";position:absolute;right:18px;top:2px;font-size:7rem;font-weight:900;color:rgba(255,255,255,.035);pointer-events:none}.hero h2{margin:0 0 7px;font-size:1.45rem}.hero p{margin:0;color:var(--muted);max-width:760px;line-height:1.55}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}.stat{background:rgba(16,26,44,.85);border:1px solid var(--line);border-radius:18px;padding:15px}.stat b{display:block;font-size:1.55rem;margin-top:5px}.stat span{color:var(--muted);font-size:.8rem}
+    .section{display:none}.section.active{display:block}
+    .section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-end;margin:18px 2px 12px}.section-head h2{margin:0;font-size:1.25rem}.section-head p{margin:4px 0 0;color:var(--muted);font-size:.88rem}.section-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .card{background:rgba(16,26,44,.9);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.15)}.card h3{margin:0 0 12px;font-size:1rem}.card p.help{color:var(--muted);font-size:.82rem;margin:-4px 0 12px;line-height:1.45}
+    .field{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}.field label{font-size:.78rem;color:#b8c6da}.field input,.field select,.field textarea,.search{width:100%;border:1px solid var(--line);background:#0a1424;color:var(--text);border-radius:13px;padding:11px 12px;outline:none}.field input:focus,.field select:focus,.field textarea:focus,.search:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(94,160,255,.12)}.field textarea{min-height:100px;resize:vertical}
+    .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.row.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .btn{border:0;border-radius:13px;padding:10px 13px;font-weight:800;background:#233451;color:var(--text);transition:.18s}.btn:hover{transform:translateY(-1px)}.btn.primary{background:linear-gradient(145deg,#5ea0ff,#6f78ff);color:white}.btn.good{background:rgba(61,220,151,.15);color:#75efb6;border:1px solid rgba(61,220,151,.25)}.btn.bad{background:rgba(255,107,122,.12);color:#ff98a3;border:1px solid rgba(255,107,122,.22)}.btn.small{padding:7px 9px;border-radius:10px;font-size:.78rem}.btn.ghost{background:transparent;border:1px solid var(--line);color:#c9d6e8}
+    .codebox{background:#06101d;border:1px solid var(--line);border-radius:15px;overflow:hidden}.code-head{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;border-bottom:1px solid var(--line);color:var(--muted);font-size:.78rem}.codebox pre{margin:0;padding:13px;overflow:auto;white-space:pre-wrap;word-break:break-word;font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;max-height:340px}
+    .list{display:flex;flex-direction:column;gap:9px}.item{padding:12px;border:1px solid var(--line);background:#0a1424;border-radius:15px}.item-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.item h4{margin:0 0 4px;font-size:.94rem}.meta{color:var(--muted);font-size:.76rem;line-height:1.45}.item-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#233451;color:#d8e6fa}.badge.good{background:rgba(61,220,151,.13);color:#73edb4}.badge.warn{background:rgba(255,189,74,.14);color:#ffd27e}.badge.bad{background:rgba(255,107,122,.14);color:#ff9aa4}
+    .empty{text-align:center;padding:28px 14px;color:var(--muted);border:1px dashed var(--line);border-radius:16px}.empty b{display:block;color:#cdd9e9;margin-bottom:5px}
+    .component-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.component-card{padding:13px;border:1px solid var(--line);background:#0a1424;border-radius:16px}.component-card h4{margin:0 0 5px}.component-card p{margin:0;color:var(--muted);font-size:.77rem;min-height:32px}.component-card .item-actions{margin-top:12px}
+    .palette{display:flex;height:56px;border-radius:12px;overflow:hidden;margin:10px 0}.swatch{flex:1;display:grid;place-items:end center;padding:4px;font-size:.63rem;font-weight:900;text-shadow:0 1px 3px rgba(0,0,0,.7);cursor:pointer}
+    .editor-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}.editor{width:100%;min-height:540px;background:#050c17;color:#dbeafe;border:1px solid var(--line);border-radius:16px;padding:14px;font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;resize:vertical;outline:none}.preview{width:100%;min-height:540px;border:1px solid var(--line);border-radius:16px;background:white}
+    .tabs{display:flex;gap:7px;overflow:auto;padding-bottom:4px}.tab{white-space:nowrap;border:1px solid var(--line);background:#0a1424;color:#b9c8dc;border-radius:12px;padding:8px 11px}.tab.active{background:#243956;color:white;border-color:#3d5880}
+    .bottom-nav{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);width:min(760px,calc(100% - 18px));display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:7px;background:rgba(8,17,31,.93);border:1px solid var(--line);border-radius:22px;backdrop-filter:blur(18px);box-shadow:var(--shadow);z-index:50}.nav-btn{border:0;background:transparent;color:#8495ad;border-radius:15px;padding:8px 4px;font-size:.68rem;display:flex;flex-direction:column;align-items:center;gap:4px}.nav-btn span:first-child{font-size:1.15rem}.nav-btn.active{background:#203453;color:white}
+    .toast{position:fixed;right:18px;bottom:96px;background:#eaf2ff;color:#07111e;padding:11px 14px;border-radius:13px;font-weight:800;box-shadow:var(--shadow);transform:translateY(20px);opacity:0;pointer-events:none;transition:.25s;z-index:80}.toast.show{opacity:1;transform:translateY(0)}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}.modal.show{display:flex}.modal-box{width:min(760px,100%);max-height:88vh;overflow:auto;background:#0d1929;border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:var(--shadow)}.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}.modal-head h3{margin:0}
+    @media(max-width:860px){.stats{grid-template-columns:repeat(2,1fr)}.grid,.grid.three,.editor-wrap{grid-template-columns:1fr}.component-grid{grid-template-columns:repeat(2,1fr)}.editor,.preview{min-height:440px}.bottom-nav{overflow:auto;display:flex}.nav-btn{min-width:88px}.hero:after{font-size:5rem}}
+    @media(max-width:560px){.app{padding:12px}.topbar{padding-top:7px}.brand p{display:none}.hero{padding:17px;border-radius:22px}.stats{gap:8px}.stat{padding:12px}.row,.row.three{grid-template-columns:1fr}.component-grid{grid-template-columns:1fr}.section-head{align-items:flex-start;flex-direction:column}.status span{display:none}.editor,.preview{min-height:400px}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><div class="brand-badge">&lt;/&gt;</div><div><h1>DevKit</h1><p>Seu kit pessoal de desenvolvimento</p></div></div>
+      <div class="status"><i class="dot" id="onlineDot"></i><span id="onlineText">Online</span></div>
+    </header>
+
+    <section id="dashboard" class="section active">
+      <div class="hero"><h2>Construa, teste e organize seus projetos em um só lugar.</h2><p>Use o gerador de PWA, salve componentes, acompanhe versões e bugs, crie paletas, teste HTML e mantenha backups locais. Tudo funciona direto no navegador e os dados ficam salvos no seu aparelho.</p></div>
+      <div class="stats">
+        <div class="stat"><span>Componentes salvos</span><b id="statComponents">0</b></div>
+        <div class="stat"><span>Versões registradas</span><b id="statVersions">0</b></div>
+        <div class="stat"><span>Bugs abertos</span><b id="statBugs">0</b></div>
+        <div class="stat"><span>Paletas</span><b id="statPalettes">0</b></div>
+      </div>
+      <div class="grid three">
+        <div class="card"><h3>⚡ Gerador PWA</h3><p class="help">Crie manifest.json e service-worker.js preenchendo poucos campos.</p><button class="btn primary" data-go="pwa">Abrir gerador</button></div>
+        <div class="card"><h3>🧪 Editor + Preview</h3><p class="help">Teste páginas HTML instantaneamente sem sair do DevKit.</p><button class="btn primary" data-go="editor">Abrir editor</button></div>
+        <div class="card"><h3>🛡️ Backup</h3><p class="help">Exporte seus dados em JSON e restaure quando precisar.</p><button class="btn primary" data-go="backup">Gerenciar backup</button></div>
+      </div>
+    </section>
+
+    <section id="pwa" class="section">
+      <div class="section-head"><div><h2>Gerador de PWA</h2><p>Gere os dois arquivos principais do seu app.</p></div></div>
+      <div class="grid">
+        <div class="card">
+          <h3>Configuração</h3>
+          <div class="row"><div class="field"><label>Nome do app</label><input id="pwaName" value="Meu App"></div><div class="field"><label>Nome curto</label><input id="pwaShort" value="MeuApp"></div></div>
+          <div class="field"><label>Descrição</label><input id="pwaDescription" value="Meu aplicativo PWA"></div>
+          <div class="row"><div class="field"><label>Arquivo inicial</label><input id="pwaStart" value="./index.html"></div><div class="field"><label>Ícone</label><input id="pwaIcon" value="icone.png"></div></div>
+          <div class="row three"><div class="field"><label>Cor do tema</label><input id="pwaTheme" type="color" value="#0f172a"></div><div class="field"><label>Fundo</label><input id="pwaBg" type="color" value="#0f172a"></div><div class="field"><label>Exibição</label><select id="pwaDisplay"><option value="standalone">standalone</option><option value="fullscreen">fullscreen</option><option value="minimal-ui">minimal-ui</option></select></div></div>
+          <div class="field"><label>Arquivos extras para cache, separados por vírgula</label><input id="pwaFiles" value="./, ./index.html, ./manifest.json, ./icone.png"></div>
+          <button class="btn primary" id="generatePwa">Gerar arquivos</button>
+        </div>
+        <div class="card"><h3>Dicas rápidas</h3><div class="list"><div class="item"><h4>1. Coloque os arquivos juntos</h4><div class="meta">index.html, manifest.json, service-worker.js e o ícone devem ficar no mesmo repositório.</div></div><div class="item"><h4>2. Registre o service worker</h4><div class="meta">Seu index precisa chamar navigator.serviceWorker.register('./service-worker.js').</div></div><div class="item"><h4>3. Atualize a versão do cache</h4><div class="meta">Quando publicar mudanças importantes, troque o nome do cache para forçar a atualização.</div></div></div></div>
+      </div>
+      <div class="grid" style="margin-top:14px">
+        <div class="card"><h3>manifest.json</h3><div class="codebox"><div class="code-head"><span>manifest.json</span><div><button class="btn small ghost" data-copy="manifestOutput">Copiar</button> <button class="btn small good" id="downloadManifest">Baixar</button></div></div><pre id="manifestOutput"></pre></div></div>
+        <div class="card"><h3>service-worker.js</h3><div class="codebox"><div class="code-head"><span>service-worker.js</span><div><button class="btn small ghost" data-copy="swOutput">Copiar</button> <button class="btn small good" id="downloadSw">Baixar</button></div></div><pre id="swOutput"></pre></div></div>
+      </div>
+    </section>
+
+    <section id="components" class="section">
+      <div class="section-head"><div><h2>Biblioteca de Componentes</h2><p>Guarde trechos de HTML, CSS e JavaScript para reutilizar.</p></div><div class="section-actions"><button class="btn primary" id="newComponent">+ Novo componente</button></div></div>
+      <input class="search" id="componentSearch" placeholder="Pesquisar por nome, categoria ou descrição...">
+      <div class="component-grid" id="componentList" style="margin-top:12px"></div>
+    </section>
+
+    <section id="versions" class="section">
+      <div class="section-head"><div><h2>Controle de Versões</h2><p>Registre mudanças importantes de cada projeto.</p></div></div>
+      <div class="grid">
+        <div class="card"><h3>Nova versão</h3><div class="row"><div class="field"><label>Projeto</label><input id="versionProject" placeholder="Ex.: Agenda de tarefas"></div><div class="field"><label>Versão</label><input id="versionNumber" placeholder="Ex.: v1.4.0"></div></div><div class="field"><label>O que mudou</label><textarea id="versionNotes" placeholder="Liste correções, melhorias e novidades..."></textarea></div><button class="btn primary" id="addVersion">Registrar versão</button></div>
+        <div class="card"><h3>Histórico</h3><input class="search" id="versionSearch" placeholder="Filtrar por projeto ou versão"><div class="list" id="versionList" style="margin-top:10px"></div></div>
+      </div>
+    </section>
+
+    <section id="bugs" class="section">
+      <div class="section-head"><div><h2>Controle de Bugs</h2><p>Anote erros para não esquecer e acompanhe o que já foi corrigido.</p></div></div>
+      <div class="grid">
+        <div class="card"><h3>Novo bug</h3><div class="field"><label>Título</label><input id="bugTitle" placeholder="Ex.: botão de exportar não responde"></div><div class="row"><div class="field"><label>Projeto</label><input id="bugProject" placeholder="Nome do projeto"></div><div class="field"><label>Prioridade</label><select id="bugPriority"><option>Baixa</option><option selected>Média</option><option>Alta</option><option>Crítica</option></select></div></div><div class="field"><label>Detalhes</label><textarea id="bugDetails" placeholder="Como reproduzir, mensagem de erro, tela afetada..."></textarea></div><button class="btn primary" id="addBug">Adicionar bug</button></div>
+        <div class="card"><h3>Lista de bugs</h3><div class="tabs" id="bugTabs"><button class="tab active" data-bugfilter="abertos">Abertos</button><button class="tab" data-bugfilter="todos">Todos</button><button class="tab" data-bugfilter="corrigidos">Corrigidos</button></div><div class="list" id="bugList" style="margin-top:10px"></div></div>
+      </div>
+    </section>
+
+    <section id="palettes" class="section">
+      <div class="section-head"><div><h2>Paletas</h2><p>Salve combinações de cores e copie as variáveis CSS com um toque.</p></div></div>
+      <div class="grid">
+        <div class="card"><h3>Nova paleta</h3><div class="field"><label>Nome</label><input id="paletteName" placeholder="Ex.: Azul profissional"></div><div class="row three"><div class="field"><label>Cor 1</label><input id="color1" type="color" value="#0f172a"></div><div class="field"><label>Cor 2</label><input id="color2" type="color" value="#1e293b"></div><div class="field"><label>Cor 3</label><input id="color3" type="color" value="#3b82f6"></div></div><div class="row"><div class="field"><label>Cor 4</label><input id="color4" type="color" value="#e2e8f0"></div><div class="field"><label>Cor 5</label><input id="color5" type="color" value="#22c55e"></div></div><button class="btn primary" id="addPalette">Salvar paleta</button></div>
+        <div class="card"><h3>Minhas paletas</h3><div class="list" id="paletteList"></div></div>
+      </div>
+    </section>
+
+    <section id="editor" class="section">
+      <div class="section-head"><div><h2>Editor HTML + Preview</h2><p>Edite, visualize e salve um rascunho diretamente no aparelho.</p></div><div class="section-actions"><button class="btn ghost" id="loadTemplate">Modelo</button><button class="btn good" id="saveEditor">Salvar</button><button class="btn primary" id="downloadEditor">Baixar HTML</button></div></div>
+      <div class="editor-wrap"><textarea class="editor" id="htmlEditor" spellcheck="false"></textarea><iframe class="preview" id="htmlPreview" sandbox="allow-scripts allow-forms allow-modals"></iframe></div>
+    </section>
+
+    <section id="backup" class="section">
+      <div class="section-head"><div><h2>Backup e Restauração</h2><p>Proteja os dados do DevKit exportando um arquivo JSON.</p></div></div>
+      <div class="grid three">
+        <div class="card"><h3>📤 Exportar</h3><p class="help">Baixa um arquivo com componentes, versões, bugs, paletas e editor.</p><button class="btn primary" id="exportBackup">Exportar backup</button></div>
+        <div class="card"><h3>📥 Restaurar</h3><p class="help">Importe um backup criado anteriormente neste DevKit.</p><input id="importBackup" type="file" accept="application/json" style="display:none"><button class="btn good" id="importBackupBtn">Escolher arquivo</button></div>
+        <div class="card"><h3>🗑️ Limpar tudo</h3><p class="help">Apaga os dados locais. Faça um backup antes se quiser preservar algo.</p><button class="btn bad" id="resetData">Apagar dados</button></div>
+      </div>
+      <div class="card" style="margin-top:14px"><h3>Resumo do armazenamento</h3><div class="list" id="storageSummary"></div></div>
+    </section>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-section="dashboard"><span>⌂</span><span>Início</span></button>
+    <button class="nav-btn" data-section="pwa"><span>⚡</span><span>PWA</span></button>
+    <button class="nav-btn" data-section="components"><span>🧩</span><span>Blocos</span></button>
+    <button class="nav-btn" data-section="versions"><span>🏷️</span><span>Versões</span></button>
+    <button class="nav-btn" data-section="bugs"><span>🐞</span><span>Bugs</span></button>
+    <button class="nav-btn" data-section="palettes"><span>🎨</span><span>Cores</span></button>
+    <button class="nav-btn" data-section="editor"><span>🧪</span><span>Editor</span></button>
+  </nav>
+
+  <div class="toast" id="toast"></div>
+  <div class="modal" id="componentModal"><div class="modal-box"><div class="modal-head"><h3 id="componentModalTitle">Novo componente</h3><button class="btn small ghost" id="closeComponentModal">Fechar</button></div><input type="hidden" id="componentId"><div class="row"><div class="field"><label>Nome</label><input id="componentName" placeholder="Ex.: Botão moderno"></div><div class="field"><label>Categoria</label><input id="componentCategory" placeholder="Botões, cards, menu..."></div></div><div class="field"><label>Descrição</label><input id="componentDescription" placeholder="Para que serve este componente?"></div><div class="field"><label>Código</label><textarea id="componentCode" style="min-height:280px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace" placeholder="Cole seu HTML/CSS/JS aqui..."></textarea></div><button class="btn primary" id="saveComponent">Salvar componente</button></div></div>
+  <div class="modal" id="previewModal"><div class="modal-box"><div class="modal-head"><h3 id="previewTitle">Preview</h3><button class="btn small ghost" id="closePreviewModal">Fechar</button></div><iframe class="preview" id="componentPreview" style="min-height:430px" sandbox="allow-scripts"></iframe></div></div>
+
+  <script>
+    const STORAGE_KEY='devKitData_v1';
+    const starterComponents=[
+      {id:'starter-btn',name:'Botão moderno',category:'Botões',description:'Botão com gradiente, hover e cantos arredondados.',builtIn:true,code:`<button class="botao-moderno">Continuar</button>\n<style>\n.botao-moderno{border:0;border-radius:14px;padding:12px 18px;color:white;font-weight:800;background:linear-gradient(135deg,#3b82f6,#7c3aed);box-shadow:0 10px 25px rgba(59,130,246,.25);cursor:pointer;transition:.2s}.botao-moderno:hover{transform:translateY(-2px)}\n</style>`},
+      {id:'starter-card',name:'Card elegante',category:'Cards',description:'Card escuro simples para dashboards.',builtIn:true,code:`<div class="card-dev"><h3>Meu card</h3><p>Conteúdo do card.</p></div>\n<style>\nbody{background:#0f172a;font-family:system-ui}.card-dev{max-width:320px;margin:40px auto;padding:20px;border-radius:20px;background:#1e293b;color:#f8fafc;border:1px solid #334155;box-shadow:0 20px 40px rgba(0,0,0,.25)}.card-dev p{color:#94a3b8}\n</style>`},
+      {id:'starter-modal',name:'Modal simples',category:'Janelas',description:'Janela modal com fundo escurecido.',builtIn:true,code:`<button onclick="abrir()">Abrir modal</button><div id="m" class="fundo"><div class="janela"><h3>Olá!</h3><p>Seu conteúdo aqui.</p><button onclick="fechar()">Fechar</button></div></div>\n<style>.fundo{position:fixed;inset:0;background:#0009;display:none;place-items:center}.fundo.ativo{display:grid}.janela{background:white;color:#111;padding:24px;border-radius:18px;min-width:260px}</style>\n<script>function abrir(){m.classList.add('ativo')}function fechar(){m.classList.remove('ativo')}<\/script>`},
+      {id:'starter-search',name:'Barra de pesquisa',category:'Formulários',description:'Campo de busca com visual limpo.',builtIn:true,code:`<div class="busca"><span>🔎</span><input placeholder="Pesquisar..."></div>\n<style>.busca{display:flex;align-items:center;gap:9px;max-width:420px;padding:10px 14px;border:1px solid #cbd5e1;border-radius:15px;background:white}.busca input{width:100%;border:0;outline:0;font:inherit}</style>`},
+      {id:'starter-toast',name:'Toast de confirmação',category:'Feedback',description:'Mensagem temporária no canto da tela.',builtIn:true,code:`<button onclick="toast('Salvo com sucesso!')">Testar</button><div id="t" class="toast-demo"></div>\n<style>.toast-demo{position:fixed;right:18px;bottom:18px;background:#111827;color:white;padding:12px 16px;border-radius:12px;opacity:0;transform:translateY(10px);transition:.25s}.toast-demo.show{opacity:1;transform:none}</style>\n<script>function toast(txt){t.textContent=txt;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}<\/script>`},
+      {id:'starter-progress',name:'Barra de progresso',category:'Indicadores',description:'Progresso percentual animado.',builtIn:true,code:`<div class="progresso"><span style="width:72%"></span></div>\n<style>.progresso{height:14px;border-radius:999px;background:#e2e8f0;overflow:hidden}.progresso span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#22c55e,#3b82f6);animation:entrar .7s ease}@keyframes entrar{from{width:0}}</style>`}
+    ];
+    const defaultEditor=`<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <title>Teste</title>\n  <style>\n    body{font-family:system-ui;background:#f4f7fb;padding:32px;color:#172033}\n    .card{max-width:420px;margin:auto;background:white;padding:24px;border-radius:20px;box-shadow:0 15px 40px #0001}\n    button{border:0;border-radius:12px;padding:11px 15px;background:#3b82f6;color:white;font-weight:700}\n  </style>\n</head>\n<body>\n  <div class="card">\n    <h1>Meu teste</h1>\n    <p>Edite este código e veja o resultado ao lado.</p>\n    <button onclick="alert('Funcionou!')">Testar</button>\n  </div>\n</body>\n</html>`;
+    const emptyData=()=>({components:[],versions:[],bugs:[],palettes:[],editor:defaultEditor,updatedAt:new Date().toISOString()});
+    let data=loadData();
+    let bugFilter='abertos';
+    function loadData(){try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));return saved&&typeof saved==='object'?{...emptyData(),...saved}:emptyData()}catch{return emptyData()}}
+    function saveData(){data.updatedAt=new Date().toISOString();localStorage.setItem(STORAGE_KEY,JSON.stringify(data));updateStats();renderStorage()}
+    function uid(prefix='id'){return prefix+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7)}
+    function escapeHtml(str=''){return String(str).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+    function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>el.classList.remove('show'),1900)}
+    async function copyText(text){try{await navigator.clipboard.writeText(text);toast('Copiado!')}catch{const t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();toast('Copiado!')}}
+    function download(name,content,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
+    function navigate(id){document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===id));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.section===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='backup')renderStorage()}
+    document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.section)));
+    document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.go)));
+
+    function updateOnline(){const on=navigator.onLine;onlineText.textContent=on?'Online':'Offline';onlineDot.style.background=on?'var(--good)':'var(--warn)'}
+    addEventListener('online',updateOnline);addEventListener('offline',updateOnline);updateOnline();
+
+    function updateStats(){statComponents.textContent=starterComponents.length+data.components.length;statVersions.textContent=data.versions.length;statBugs.textContent=data.bugs.filter(b=>b.status!=='Corrigido').length;statPalettes.textContent=data.palettes.length}
+
+    function generatePwa(){const files=pwaFiles.value.split(',').map(s=>s.trim()).filter(Boolean);const manifest={name:pwaName.value.trim()||'Meu App',short_name:pwaShort.value.trim()||'App',description:pwaDescription.value.trim(),start_url:pwaStart.value.trim()||'./index.html',scope:'./',display:pwaDisplay.value,background_color:pwaBg.value,theme_color:pwaTheme.value,icons:[{src:pwaIcon.value.trim()||'icone.png',sizes:'192x192',type:'image/png',purpose:'any maskable'}]};manifestOutput.textContent=JSON.stringify(manifest,null,2);const cache='app-cache-v1';swOutput.textContent=`const CACHE='${cache}';\nconst FILES=${JSON.stringify(files,null,2)};\n\nself.addEventListener('install',event=>{\n  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)));\n  self.skipWaiting();\n});\n\nself.addEventListener('activate',event=>{\n  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))));\n  self.clients.claim();\n});\n\nself.addEventListener('fetch',event=>{\n  if(event.request.method!=='GET')return;\n  event.respondWith(fetch(event.request).then(response=>{\n    const copy=response.clone();\n    caches.open(CACHE).then(cache=>cache.put(event.request,copy));\n    return response;\n  }).catch(()=>caches.match(event.request).then(cached=>cached||caches.match('./index.html'))));\n});`}
+    generatePwa();generatePwaBtn=document.getElementById('generatePwa');generatePwaBtn.addEventListener('click',()=>{generatePwa();toast('Arquivos atualizados')});
+    document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',()=>copyText(document.getElementById(b.dataset.copy).textContent)));
+    downloadManifest.addEventListener('click',()=>download('manifest.json',manifestOutput.textContent,'application/json'));
+    downloadSw.addEventListener('click',()=>download('service-worker.js',swOutput.textContent,'text/javascript'));
+
+    function allComponents(){return [...starterComponents,...data.components]}
+    function renderComponents(){const q=componentSearch.value.trim().toLowerCase();const list=allComponents().filter(c=>[c.name,c.category,c.description].join(' ').toLowerCase().includes(q));componentList.innerHTML=list.length?list.map(c=>`<article class="component-card"><div class="item-top"><div><h4>${escapeHtml(c.name)}</h4><span class="badge">${escapeHtml(c.category||'Sem categoria')}</span></div>${c.builtIn?'<span class="badge good">Incluso</span>':''}</div><p>${escapeHtml(c.description||'')}</p><div class="item-actions"><button class="btn small primary" data-comp-preview="${c.id}">Visualizar</button><button class="btn small ghost" data-comp-copy="${c.id}">Copiar</button>${c.builtIn?'':`<button class="btn small ghost" data-comp-edit="${c.id}">Editar</button><button class="btn small bad" data-comp-del="${c.id}">Excluir</button>`}</div></article>`).join(''):'<div class="empty"><b>Nenhum componente encontrado</b>Tente outra pesquisa ou crie um novo.</div>'}
+    componentSearch.addEventListener('input',renderComponents);newComponent.addEventListener('click',()=>openComponent());closeComponentModal.addEventListener('click',()=>componentModal.classList.remove('show'));closePreviewModal.addEventListener('click',()=>previewModal.classList.remove('show'));
+    function openComponent(c=null){componentModalTitle.textContent=c?'Editar componente':'Novo componente';componentId.value=c?.id||'';componentName.value=c?.name||'';componentCategory.value=c?.category||'';componentDescription.value=c?.description||'';componentCode.value=c?.code||'';componentModal.classList.add('show')}
+    saveComponent.addEventListener('click',()=>{const name=componentName.value.trim(),code=componentCode.value.trim();if(!name||!code)return toast('Informe nome e código');const id=componentId.value;if(id){const i=data.components.findIndex(c=>c.id===id);if(i>=0)data.components[i]={...data.components[i],name,category:componentCategory.value.trim(),description:componentDescription.value.trim(),code}}else data.components.unshift({id:uid('comp'),name,category:componentCategory.value.trim(),description:componentDescription.value.trim(),code,builtIn:false});saveData();renderComponents();componentModal.classList.remove('show');toast('Componente salvo')});
+    componentList.addEventListener('click',e=>{const p=e.target.closest('[data-comp-preview]'),c=e.target.closest('[data-comp-copy]'),ed=e.target.closest('[data-comp-edit]'),del=e.target.closest('[data-comp-del]');const id=p?.dataset.compPreview||c?.dataset.compCopy||ed?.dataset.compEdit||del?.dataset.compDel;if(!id)return;const comp=allComponents().find(x=>x.id===id);if(!comp)return;if(p){previewTitle.textContent=comp.name;componentPreview.srcdoc=comp.code;previewModal.classList.add('show')}if(c)copyText(comp.code);if(ed)openComponent(comp);if(del&&confirm(`Excluir "${comp.name}"?`)){data.components=data.components.filter(x=>x.id!==id);saveData();renderComponents();toast('Componente excluído')}});
+
+    function renderVersions(){const q=versionSearch.value.trim().toLowerCase();const list=data.versions.filter(v=>[v.project,v.number,v.notes].join(' ').toLowerCase().includes(q));versionList.innerHTML=list.length?list.map(v=>`<div class="item"><div class="item-top"><div><h4>${escapeHtml(v.project)} · ${escapeHtml(v.number)}</h4><div class="meta">${new Date(v.date).toLocaleString('pt-BR')}</div></div><span class="badge">${escapeHtml(v.number)}</span></div><div class="meta" style="margin-top:8px;white-space:pre-wrap">${escapeHtml(v.notes)}</div><div class="item-actions"><button class="btn small bad" data-version-del="${v.id}">Excluir</button></div></div>`).join(''):'<div class="empty"><b>Nenhuma versão registrada</b>Adicione a primeira versão do seu projeto.</div>'}
+    addVersion.addEventListener('click',()=>{const project=versionProject.value.trim(),number=versionNumber.value.trim(),notes=versionNotes.value.trim();if(!project||!number)return toast('Informe projeto e versão');data.versions.unshift({id:uid('ver'),project,number,notes,date:new Date().toISOString()});saveData();versionNumber.value='';versionNotes.value='';renderVersions();toast('Versão registrada')});versionSearch.addEventListener('input',renderVersions);versionList.addEventListener('click',e=>{const b=e.target.closest('[data-version-del]');if(!b)return;data.versions=data.versions.filter(v=>v.id!==b.dataset.versionDel);saveData();renderVersions();toast('Versão excluída')});
+
+    function priorityClass(p){return p==='Crítica'||p==='Alta'?'bad':p==='Média'?'warn':'good'}
+    function renderBugs(){let list=[...data.bugs];if(bugFilter==='abertos')list=list.filter(b=>b.status!=='Corrigido');if(bugFilter==='corrigidos')list=list.filter(b=>b.status==='Corrigido');bugList.innerHTML=list.length?list.map(b=>`<div class="item"><div class="item-top"><div><h4>${escapeHtml(b.title)}</h4><div class="meta">${escapeHtml(b.project||'Sem projeto')} · ${new Date(b.date).toLocaleDateString('pt-BR')}</div></div><span class="badge ${priorityClass(b.priority)}">${escapeHtml(b.priority)}</span></div><div class="meta" style="margin-top:8px;white-space:pre-wrap">${escapeHtml(b.details||'')}</div><div class="item-actions"><button class="btn small ${b.status==='Corrigido'?'warn':'good'}" data-bug-toggle="${b.id}">${b.status==='Corrigido'?'Reabrir':'Marcar corrigido'}</button><button class="btn small bad" data-bug-del="${b.id}">Excluir</button></div></div>`).join(''):'<div class="empty"><b>Nenhum bug aqui</b>Quando encontrar um problema, registre para acompanhar.</div>'}
+    addBug.addEventListener('click',()=>{const title=bugTitle.value.trim();if(!title)return toast('Informe o título do bug');data.bugs.unshift({id:uid('bug'),title,project:bugProject.value.trim(),priority:bugPriority.value,details:bugDetails.value.trim(),status:'Aberto',date:new Date().toISOString()});saveData();bugTitle.value='';bugDetails.value='';renderBugs();toast('Bug adicionado')});
+    bugTabs.addEventListener('click',e=>{const t=e.target.closest('[data-bugfilter]');if(!t)return;bugFilter=t.dataset.bugfilter;bugTabs.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));renderBugs()});bugList.addEventListener('click',e=>{const toggle=e.target.closest('[data-bug-toggle]'),del=e.target.closest('[data-bug-del]');if(toggle){const b=data.bugs.find(x=>x.id===toggle.dataset.bugToggle);if(b)b.status=b.status==='Corrigido'?'Aberto':'Corrigido';saveData();renderBugs();toast('Status atualizado')}if(del){data.bugs=data.bugs.filter(x=>x.id!==del.dataset.bugDel);saveData();renderBugs();toast('Bug excluído')}});
+
+    function renderPalettes(){paletteList.innerHTML=data.palettes.length?data.palettes.map(p=>`<div class="item"><div class="item-top"><h4>${escapeHtml(p.name)}</h4><span class="badge">${p.colors.length} cores</span></div><div class="palette">${p.colors.map(c=>`<div class="swatch" data-color="${c}" style="background:${c}">${c}</div>`).join('')}</div><div class="item-actions"><button class="btn small ghost" data-palette-copy="${p.id}">Copiar CSS</button><button class="btn small bad" data-palette-del="${p.id}">Excluir</button></div></div>`).join(''):'<div class="empty"><b>Nenhuma paleta salva</b>Crie uma combinação para seus próximos projetos.</div>'}
+    addPalette.addEventListener('click',()=>{const name=paletteName.value.trim();if(!name)return toast('Dê um nome à paleta');data.palettes.unshift({id:uid('pal'),name,colors:[color1.value,color2.value,color3.value,color4.value,color5.value]});saveData();paletteName.value='';renderPalettes();toast('Paleta salva')});
+    paletteList.addEventListener('click',e=>{const sw=e.target.closest('[data-color]'),copy=e.target.closest('[data-palette-copy]'),del=e.target.closest('[data-palette-del]');if(sw)copyText(sw.dataset.color);if(copy){const p=data.palettes.find(x=>x.id===copy.dataset.paletteCopy);if(p)copyText(`:root{\n${p.colors.map((c,i)=>`  --cor-${i+1}: ${c};`).join('\n')}\n}`)}if(del){data.palettes=data.palettes.filter(x=>x.id!==del.dataset.paletteDel);saveData();renderPalettes();toast('Paleta excluída')}});
+
+    function updatePreview(){htmlPreview.srcdoc=htmlEditor.value}
+    htmlEditor.value=data.editor||defaultEditor;updatePreview();let previewTimer;htmlEditor.addEventListener('input',()=>{clearTimeout(previewTimer);previewTimer=setTimeout(updatePreview,220)});saveEditor.addEventListener('click',()=>{data.editor=htmlEditor.value;saveData();toast('Rascunho salvo')});loadTemplate.addEventListener('click',()=>{if(confirm('Substituir o conteúdo atual pelo modelo?')){htmlEditor.value=defaultEditor;updatePreview()}});downloadEditor.addEventListener('click',()=>download('pagina-teste.html',htmlEditor.value,'text/html'));
+
+    function renderStorage(){const bytes=new Blob([JSON.stringify(data)]).size;storageSummary.innerHTML=`<div class="item"><div class="item-top"><div><h4>Dados locais</h4><div class="meta">Última atualização: ${new Date(data.updatedAt).toLocaleString('pt-BR')}</div></div><span class="badge">${(bytes/1024).toFixed(1)} KB</span></div></div><div class="item"><h4>Conteúdo</h4><div class="meta">${data.components.length} componentes personalizados · ${data.versions.length} versões · ${data.bugs.length} bugs · ${data.palettes.length} paletas</div></div>`}
+    exportBackup.addEventListener('click',()=>download(`devkit-backup-${new Date().toISOString().slice(0,10)}.json`,JSON.stringify(data,null,2),'application/json'));
+    importBackupBtn.addEventListener('click',()=>importBackup.click());importBackup.addEventListener('change',async()=>{const file=importBackup.files[0];if(!file)return;try{const imported=JSON.parse(await file.text());if(!imported||typeof imported!=='object')throw new Error();data={...emptyData(),...imported};saveData();renderAll();htmlEditor.value=data.editor||defaultEditor;updatePreview();toast('Backup restaurado')}catch{toast('Arquivo de backup inválido')}finally{importBackup.value=''}});
+    resetData.addEventListener('click',()=>{if(!confirm('Apagar todos os dados do DevKit? Esta ação não pode ser desfeita sem um backup.'))return;data=emptyData();saveData();htmlEditor.value=data.editor;updatePreview();renderAll();toast('Dados apagados')});
+
+    function renderAll(){updateStats();renderComponents();renderVersions();renderBugs();renderPalettes();renderStorage()}
+    renderAll();
+
+    if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}))}
+  </script>
+</body>
+</html>
