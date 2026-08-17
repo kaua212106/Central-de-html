@@ -1,5 +1,5 @@
 const CACHE='devkit-cache-v6';
-const FILES=['./','./index.html','./manifest.json','./icone.png'];
+const FILES=['./','./index.html','./manifest.json','./icone.png', './auth-guard-v3.js'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)));
